@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -21,5 +23,26 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         DontDestroyOnLoad(gameObject);
         instance = this;
+    }
+
+    void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.GameVersion = gameVersion;
+    }
+
+    public override void OnConnected()
+    {
+        Debug.Log("Pun Connected");
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("Pun Connected to Master");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.LogWarningFormat("PUN Disconnected was called by PUN with reason {0}", cause);
     }
 }
