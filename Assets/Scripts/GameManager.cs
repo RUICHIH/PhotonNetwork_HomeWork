@@ -45,4 +45,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         Debug.LogWarningFormat("PUN Disconnected was called by PUN with reason {0}", cause);
     }
+
+    public void JoinGameRoom()
+    {
+        var options = new RoomOptions
+        {
+            MaxPlayers = 6
+        };
+
+        PhotonNetwork.JoinOrCreateRoom("Kingdom", options, null);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        Debug.Log("Joined Room!!");
+    }
 }
