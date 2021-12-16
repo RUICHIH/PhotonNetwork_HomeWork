@@ -8,6 +8,7 @@ using Photon.Realtime;
 public class GameManager : MonoBehaviourPunCallbacks
 {
     public static GameManager instance;
+    public static GameObject localPlayer;
     string gameVersion = "1";
 
     void Awake()
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.GameVersion = gameVersion;
     }
@@ -58,6 +60,25 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Joined Room!!");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("Created room");
+            PhotonNetwork.LoadLevel("GameScene");
+        }
+        else
+        {
+            Debug.Log("Joined room");
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene,LoadSceneMode mode)
+    {
+        if (!PhotonNetwork.InRoom)
+        {
+            return;
+        }
+
+        localPlayer = PhotonNetwork.Instantiate("TankPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
+        Debug.Log("Player Instance ID: " + localPlayer.GetInstanceID());
     }
 }
