@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    private void OnSceneLoaded(Scene scene,LoadSceneMode mode)
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (!PhotonNetwork.InRoom)
         {
@@ -79,6 +79,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
 
         localPlayer = PhotonNetwork.Instantiate("TankPlayer", new Vector3(0, 0, 0), Quaternion.identity, 0);
-        Debug.Log("Player Instance ID: " + localPlayer.GetInstanceID());
+        Debug.Log("Player Intance ID" + localPlayer.GetInstanceID());
     }
 }
