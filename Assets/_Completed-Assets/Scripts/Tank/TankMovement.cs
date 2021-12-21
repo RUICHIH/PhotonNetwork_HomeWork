@@ -1,9 +1,10 @@
-﻿using Tanks;
+﻿using Photon.Pun;
+using Tanks;
 using UnityEngine;
 
 namespace Complete
 {
-    public class TankMovement : MonoBehaviour
+    public class TankMovement : MonoBehaviourPunCallbacks
     {
         public int m_PlayerNumber = 1;              // Used to identify which tank belongs to which player.  This is set by this tank's manager.
         public float m_Speed = 12f;                 // How fast the tank moves forward and back.
@@ -151,13 +152,19 @@ namespace Complete
 
         private void TurretTurn()
         {
-            //    float turn = m_TureetRotateInputValue * m_TurnSpeed * Time.deltaTime;
+            if(m_TankTurret == null)
+            {
+                return;
+            }
+            var newRotate = new Vector3(0f, m_TureetRotateInputValue, 0f);
+            m_TankTurret.transform.Rotate(newRotate);
+            photonView.RPC("RotateOtherTurrent", RpcTarget.Others, newRotate);
+        }
 
-            //    Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);
-
-            //    m_Rigidbody.MoveRotation(m_Rigidbody.rotation * turnRotation);
-
-            m_TankTurret.transform.Rotate(new Vector3(0f, m_TureetRotateInputValue, 0f));
+        [PunRPC]
+        void RotateOtherTurret(Vector3 rotate)
+        {
+            m_TankTurret.transform.Rotate(rotate);
         }
     }
 }

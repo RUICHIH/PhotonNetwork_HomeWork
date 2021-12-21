@@ -89,9 +89,10 @@ namespace Complete
             // Set the fired flag so only Fire is only called once.
             m_Fired = true;
 
+            var m_TurretRotate = m_FireTransform.rotation;
             // Create an instance of the shell and store a reference to it's rigidbody.
             Rigidbody shellInstance =
-                Instantiate (m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
+                Instantiate (m_Shell, m_FireTransform.position, m_TurretRotate) as Rigidbody;
 
             photonView.RPC("FireOther", RpcTarget.Others, m_FireTransform.position);
             // Set the shell's velocity to the launch force in the fire position's forward direction.
